@@ -10,10 +10,21 @@
 # This script will make a 1GB boot, and 30GB root partition. The 3rd partition will use the rest of your remaining diskspace as a home partition.
 # If you wish to change any of this, see the "PARTITIONING" section
 #
-#
+# This script is written for UEFI bios and doesnt have support for legacy bios installation
 
+# PARTITIONING
 disk=/dev/sda
-
 fdisk $disk < fdisk_cmds
 
+# FILESYSTEMS
+mkfs.ext4 ${disk}3 # home partition
+mkfs.ext4 ${disk}2 # root partition
+mkfs.fat -F32 ${disk}1 # boot partition
+
+# MOUNT PARTITIONS
+mount ${disk}2 /mnt # mount root partition 
+mkdir /mnt/home
+mkdir /mnt/boot
+mount ${disk}1 /mnt/boot # mount boot partition 
+mount ${disk}3 /mnt/home # mount home partition 
 
