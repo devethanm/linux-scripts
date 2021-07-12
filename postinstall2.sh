@@ -1,0 +1,3 @@
+# SECOND POST INSTALLATION SCRIPT, DO NOT RUN AS ROOT
+
+yay -S xwallpaper xbindkeys

@@ -11,6 +11,14 @@
 # If you wish to change any of this, see the "PARTITIONING" section
 #
 # This script is written for UEFI bios and doesnt have support for legacy bios installation
+#
+# This script installs the runit init system for artix
+
+# MAKE OTHER SCRIPTS EXECUTABLE
+chmod +x install2.sh
+chmod +x postinstall.sh
+chmod +x postinstall2.sh
+chmod +x yayinstall.sh
 
 # PARTITIONING
 disk=/dev/sda
@@ -27,4 +35,14 @@ mkdir /mnt/home
 mkdir /mnt/boot
 mount ${disk}1 /mnt/boot # mount boot partition 
 mount ${disk}3 /mnt/home # mount home partition 
+
+# RUN INSTALLATION COMMANDS
+basestrap /mnt base base-devel runit elogind-runit linux linux-firmware vim git neofetch
+
+# CREATE FSTAB
+fstabgen -U /mnt >> /mnt/etc/fstab
+
+# CHROOT
+mv install2.sh /mnt/home/ # move the 2nd install script to somewhere artix-chroot can access
+artix-chroot /mnt
 
